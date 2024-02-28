@@ -1,0 +1,73 @@
+{
+  "folders": [
+    {
+      "path": "./",
+      "name": "ROOT"
+    },
+    {
+      "path": "./projects/NumGuessFullstack-contracts"
+    },
+    {
+      "path": "./projects/NumGuessFullstack-app"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "projects/": true
+    },
+    "jest.disabledWorkspaceFolders": ["ROOT", "projects"],
+    "dotenv.enableAutocloaking": false
+  },
+  "extensions": {
+    "recommendations": ["joshx.workspace-terminals"]
+  },
+  
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build artifacts (+ LocalNet)",
+        "command": "${workspaceFolder}/projects/NumGuessFullstack-contracts/.venv/bin/python",
+        "windows": {
+          "command": "${workspaceFolder}/projects/NumGuessFullstack-contracts/.venv/Scripts/python.exe"
+        },
+        "args": ["-m", "smart_contracts", "build"],
+        "options": {
+          "cwd": "${workspaceFolder}/projects/NumGuessFullstack-contracts"
+        },
+        "dependsOn": "Start AlgoKit LocalNet",
+        "problemMatcher": []
+      },
+      {
+        "label": "Start AlgoKit LocalNet",
+        "command": "algokit",
+        "args": ["localnet", "start"],
+        "type": "shell",
+        "options": {
+          "cwd": "${workspaceFolder}"
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "configurations": [],
+    "compounds": [
+      {
+        "preLaunchTask": "Build artifacts (+ LocalNet)",
+        "name": "Run Frontend (+ LocalNet and Smart Contract)",
+        "configurations": [
+          {
+            "name": "Deploy contracts",
+            "folder": "NumGuessFullstack-contracts"
+          },
+          { "name": "Run dApp", "folder": "NumGuessFullstack-app" }
+        ],
+        "presentation": {
+          "hidden": false,
+          "group": "0. Run workspace"
+        }
+      }
+    ]
+  }
+  }

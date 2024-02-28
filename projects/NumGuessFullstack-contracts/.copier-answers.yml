@@ -1,0 +1,10 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 1.13.1
+_src_path: gh:algorandfoundation/algokit-beaker-default-template
+author_email: milosprorocic1307@gmail.com
+author_name: sxomile
+contract_name: pogadjanje
+deployment_language: python
+preset_name: starter
+project_name: NumGuessFullstack-contracts
+
