@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-import { PogadjanjeClient } from '../contracts/pogadjanje'
+import { PogadjanjeClient } from '../contracts/Pogadjanje'
 
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
@@ -17,6 +17,7 @@ interface AppCallsInterface {
 const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [contractInput, setContractInput] = useState<string>('')
+  const [guess, setGuess] = useState<string>('')
 
   const algodConfig = getAlgodConfigFromViteEnvironment()
   const algodClient = algokit.getAlgoClient({
@@ -61,7 +62,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       setLoading(false)
       return
     })
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
@@ -71,19 +72,28 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     enqueueSnackbar(`Response from the contract: ${response?.return}`, { variant: 'success' })
     setLoading(false)
   }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <dialog id="appcalls_modal" className={`modal ${openModal ? 'modal-open' : ''} bg-slate-200`}>
       <form method="dialog" className="modal-box">
-        <h3 className="font-bold text-lg">Say hello to your Algorand smart contract</h3>
+        <h3 className="font-bold text-2xl">Can YOU guess the hidden number?</h3>
         <br />
         <input
           type="text"
-          placeholder="Provide input to hello function"
+          placeholder="Provide amount of Algo you're willing to bet"
           className="input input-bordered w-full"
           value={contractInput}
           onChange={(e) => {
             setContractInput(e.target.value)
+          }}
+        />
+        <input
+          type="text"
+          placeholder="Guess a number 1-10"
+          className="input input-bordered w-full"
+          value={guess}
+          onChange={(e) => {
+              setGuess(e.target.value)
           }}
         />
         <div className="modal-action ">
@@ -91,7 +101,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
             Close
           </button>
           <button className={`btn`} onClick={sendAppCall}>
-            {loading ? <span className="loading loading-spinner" /> : 'Send application call'}
+            {loading ? <span className="loading loading-spinner" /> : 'Try your luck!'}
           </button>
         </div>
       </form>

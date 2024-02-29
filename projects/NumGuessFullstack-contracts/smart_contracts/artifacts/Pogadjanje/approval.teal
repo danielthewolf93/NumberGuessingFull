@@ -1,0 +1,321 @@
+#pragma version 8
+intcblock 0 1 10
+bytecblock 0x736b726976656e695f62726f6a 0x 0x62726f6a6163 0x151f7c75 0x72657a756c746174
+txn NumAppArgs
+intc_0 // 0
+==
+bnz main_l10
+txna ApplicationArgs 0
+pushbytes 0x0414afb8 // "zapocni_igru()string"
+==
+bnz main_l9
+txna ApplicationArgs 0
+pushbytes 0x5ddd5fca // "pogodi(pay,uint64)string"
+==
+bnz main_l8
+txna ApplicationArgs 0
+pushbytes 0xd860041e // "rezultat_igre()string"
+==
+bnz main_l7
+txna ApplicationArgs 0
+pushbytes 0x02bece11 // "hello(string)string"
+==
+bnz main_l6
+err
+main_l6:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub hellocaster_11
+intc_1 // 1
+return
+main_l7:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub rezultatigrecaster_10
+intc_1 // 1
+return
+main_l8:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub pogodicaster_9
+intc_1 // 1
+return
+main_l9:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub zapocniigrucaster_8
+intc_1 // 1
+return
+main_l10:
+txn OnCompletion
+intc_0 // NoOp
+==
+bnz main_l14
+txn OnCompletion
+intc_1 // OptIn
+==
+bnz main_l13
+err
+main_l13:
+txn ApplicationID
+intc_0 // 0
+!=
+assert
+callsub optin_1
+intc_1 // 1
+return
+main_l14:
+txn ApplicationID
+intc_0 // 0
+==
+assert
+callsub create_0
+intc_1 // 1
+return
+
+// create
+create_0:
+proto 0 0
+bytec_0 // "skriveni_broj"
+intc_0 // 0
+app_global_put
+retsub
+
+// opt_in
+optin_1:
+proto 0 0
+intc_1 // 1
+return
+
+// zapocni_igru
+zapocniigru_2:
+proto 0 1
+bytec_1 // ""
+bytec_0 // "skriveni_broj"
+pushint 3 // 3
+app_global_put
+pushbytes 0x00314e616d657374656e206a6520736b726976656e692062726f6a2e20537265636e6f20736120706f6761646a616e6a656d21 // 0x00314e616d657374656e206a6520736b726976656e692062726f6a2e20537265636e6f20736120706f6761646a616e6a656d21
+frame_bury 0
+retsub
+
+// pogodi
+pogodi_3:
+proto 2 1
+bytec_1 // ""
+bytec_0 // "skriveni_broj"
+app_global_get
+frame_dig -1
+==
+bnz pogodi_3_l2
+txn Sender
+bytec 4 // "rezultat"
+intc_0 // 0
+app_local_put
+b pogodi_3_l3
+pogodi_3_l2:
+txn Sender
+frame_dig -2
+gtxns Amount
+pushint 5 // 5
+*
+callsub pay_5
+txn Sender
+bytec 4 // "rezultat"
+intc_1 // 1
+app_local_put
+callsub promenibroj_6
+pogodi_3_l3:
+retsub
+
+// rezultat_igre
+rezultatigre_4:
+proto 0 1
+bytec_1 // ""
+txn Sender
+bytec 4 // "rezultat"
+app_local_get
+intc_1 // 1
+==
+bnz rezultatigre_4_l2
+pushbytes 0x001c50726f6d6173616a212050726f62616a2064727567692062726f6a2e // 0x001c50726f6d6173616a212050726f62616a2064727567692062726f6a2e
+frame_bury 0
+b rezultatigre_4_l3
+rezultatigre_4_l2:
+pushbytes 0x0023506f676f64616b21204e6f766163206a652075706c6163656e206e6120726163756e2e // 0x0023506f676f64616b21204e6f766163206a652075706c6163656e206e6120726163756e2e
+frame_bury 0
+rezultatigre_4_l3:
+retsub
+
+// pay
+pay_5:
+proto 2 0
+itxn_begin
+intc_1 // pay
+itxn_field TypeEnum
+pushint 1000 // 1000
+itxn_field Fee
+frame_dig -1
+itxn_field Amount
+frame_dig -2
+itxn_field Receiver
+itxn_submit
+retsub
+
+// promeni_broj
+promenibroj_6:
+proto 0 0
+txn Sender
+bytec_2 // "brojac"
+intc_0 // 0
+app_local_put
+promenibroj_6_l1:
+txn Sender
+bytec_2 // "brojac"
+app_local_get
+pushint 7 // 7
+<
+bnz promenibroj_6_l4
+bytec_0 // "skriveni_broj"
+app_global_get
+intc_2 // 10
+>
+bz promenibroj_6_l5
+bytec_0 // "skriveni_broj"
+bytec_0 // "skriveni_broj"
+app_global_get
+intc_2 // 10
+-
+app_global_put
+b promenibroj_6_l5
+promenibroj_6_l4:
+bytec_0 // "skriveni_broj"
+bytec_0 // "skriveni_broj"
+app_global_get
+intc_1 // 1
++
+app_global_put
+txn Sender
+bytec_2 // "brojac"
+txn Sender
+bytec_2 // "brojac"
+app_local_get
+intc_1 // 1
++
+app_local_put
+b promenibroj_6_l1
+promenibroj_6_l5:
+txn Sender
+bytec_2 // "brojac"
+intc_0 // 0
+app_local_put
+retsub
+
+// hello
+hello_7:
+proto 1 1
+bytec_1 // ""
+pushbytes 0x48656c6c6f2c20 // "Hello, "
+frame_dig -1
+extract 2 0
+concat
+frame_bury 0
+frame_dig 0
+len
+itob
+extract 6 0
+frame_dig 0
+concat
+frame_bury 0
+retsub
+
+// zapocni_igru_caster
+zapocniigrucaster_8:
+proto 0 0
+bytec_1 // ""
+callsub zapocniigru_2
+frame_bury 0
+bytec_3 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// pogodi_caster
+pogodicaster_9:
+proto 0 0
+bytec_1 // ""
+intc_0 // 0
+dup
+txna ApplicationArgs 1
+btoi
+frame_bury 2
+txn GroupIndex
+intc_1 // 1
+-
+frame_bury 1
+frame_dig 1
+gtxns TypeEnum
+intc_1 // pay
+==
+assert
+frame_dig 1
+frame_dig 2
+callsub pogodi_3
+frame_bury 0
+bytec_3 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// rezultat_igre_caster
+rezultatigrecaster_10:
+proto 0 0
+bytec_1 // ""
+callsub rezultatigre_4
+frame_bury 0
+bytec_3 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// hello_caster
+hellocaster_11:
+proto 0 0
+bytec_1 // ""
+dup
+txna ApplicationArgs 1
+frame_bury 1
+frame_dig 1
+callsub hello_7
+frame_bury 0
+bytec_3 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub

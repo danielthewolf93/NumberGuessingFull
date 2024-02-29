@@ -1,0 +1,48 @@
+{
+    "name": "Pogadjanje",
+    "methods": [
+        {
+            "name": "zapocni_igru",
+            "args": [],
+            "returns": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "pogodi",
+            "args": [
+                {
+                    "type": "pay",
+                    "name": "uplata"
+                },
+                {
+                    "type": "uint64",
+                    "name": "broj"
+                }
+            ],
+            "returns": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "rezultat_igre",
+            "args": [],
+            "returns": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "hello",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "name"
+                }
+            ],
+            "returns": {
+                "type": "string"
+            }
+        }
+    ],
+    "networks": {}
+}

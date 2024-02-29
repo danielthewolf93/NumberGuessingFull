@@ -5,7 +5,8 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #38b2ac;
+  background-image: url("../images/BgImage.png");
+  /* background-size: cover; */
 }
 
 .hero-content {
@@ -68,11 +69,12 @@
 
 .modal-box {
   margin: 2.5em auto;
-  background: #fff;
+  background: #000;
   border-radius: 0.5em;
   width: 40em;
   max-width: 90vw;
   padding: 1em;
+  color: #9acd32;
 }
 
 .font-bold {
@@ -123,4 +125,17 @@
   border-top: 1px solid #e2e8f0;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.input-bordered {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  color: inherit;
+  width: 95%;
+  height: 100%;
+  font-family: inherit;
+  font-weight: inherit;
+  border: none;
+  border-radius: 0.2rem;
 }
