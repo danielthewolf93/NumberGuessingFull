@@ -1,5 +1,5 @@
 #pragma version 8
-intcblock 0 1 10
+intcblock 0 1 5 10
 bytecblock 0x736b726976656e695f62726f6a 0x 0x62726f6a6163 0x151f7c75 0x72657a756c746174
 txn NumAppArgs
 intc_0 // 0
@@ -116,7 +116,7 @@ zapocniigru_2:
 proto 0 1
 bytec_1 // ""
 bytec_0 // "skriveni_broj"
-pushint 3 // 3
+intc_2 // 5
 app_global_put
 pushbytes 0x00314e616d657374656e206a6520736b726976656e692062726f6a2e20537265636e6f20736120706f6761646a616e6a656d21 // 0x00314e616d657374656e206a6520736b726976656e692062726f6a2e20537265636e6f20736120706f6761646a616e6a656d21
 frame_bury 0
@@ -140,7 +140,7 @@ pogodi_3_l2:
 txn Sender
 frame_dig -2
 gtxns Amount
-pushint 5 // 5
+intc_2 // 5
 *
 callsub pay_5
 txn Sender
@@ -201,13 +201,13 @@ pushint 7 // 7
 bnz promenibroj_6_l4
 bytec_0 // "skriveni_broj"
 app_global_get
-intc_2 // 10
+intc_3 // 10
 >
 bz promenibroj_6_l5
 bytec_0 // "skriveni_broj"
 bytec_0 // "skriveni_broj"
 app_global_get
-intc_2 // 10
+intc_3 // 10
 -
 app_global_put
 b promenibroj_6_l5
